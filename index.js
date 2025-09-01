@@ -149,12 +149,23 @@ allBtn.addEventListener("click", showAllGames);
 const descriptionContainer = document.getElementById("description-container");
 
 // use filter or reduce to count the number of unfunded games
-
+const unfundedGamesCount = GAMES_JSON.reduce((acc, game) => acc + (game.pledged < game.goal ? 1 : 0), 0);
 
 // create a string that explains the number of unfunded games using the ternary operator
+const unfundedGamesString = `
+    A total of $${totalRaised.toLocaleString()} 
+    has been raised for ${totalGames.toLocaleString()} 
+    ${unfundedGamesCount === 1 ? "game." : "games."} 
+    Currently, ${unfundedGamesCount.toLocaleString()} 
+    ${unfundedGamesCount === 1 ? "game" : "games"} remain unfunded.
+    We need your help to fund these amazing games!
+`;
 
 
 // create a new DOM element containing the template string and append it to the description container
+const unfundedGamesElement = document.createElement("p");
+unfundedGamesElement.innerHTML = unfundedGamesString;
+descriptionContainer.appendChild(unfundedGamesElement);
 
 /************************************************************************************
  * Challenge 7: Select & display the top 2 games
@@ -169,7 +180,14 @@ const sortedGames =  GAMES_JSON.sort( (item1, item2) => {
 });
 
 // use destructuring and the spread operator to grab the first and second games
+const [topGame, runnerUpGame, ...rest] = sortedGames;
 
 // create a new element to hold the name of the top pledge game, then append it to the correct element
+const topGameElement = document.createElement("p");
+topGameElement.innerHTML = `${topGame.name}`;
+firstGameContainer.appendChild(topGameElement);
 
 // do the same for the runner up item
+const runnerUpGameElement = document.createElement("p");
+runnerUpGameElement.innerHTML = `${runnerUpGame.name}`;
+secondGameContainer.appendChild(runnerUpGameElement);
